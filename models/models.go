@@ -28,10 +28,10 @@ type LeagueSettings struct {
 type ProjectionRequest struct {
 	Settings       LeagueSettings `json:"settings"`
 	ProjectionName string         `json:"projection_name"`
+	Position       string         `json:"position"`
 }
 
 type PlayerProjection struct {
-	PlayerID    string  `json:"player_id"`
 	PlayerName  string  `json:"player_name"`
 	TotalPoints float64 `json:"total_points"`
 }

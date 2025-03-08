@@ -1,11 +1,30 @@
 package main
 
 import (
+	"log"
+	"os"
+	"super-fantasy-api/db"
 	"super-fantasy-api/handlers"
+
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// Load .env file if it exists
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found, using defaults or environment variables")
+	}
+
+	// Fetch MongoDB configuration from environment variables
+	mongoURI := os.Getenv("MONGO_URI")
+	dbName := os.Getenv("DB_NAME")
+	collectionName := os.Getenv("COLLECTION_NAME")
+
+	// Initialize MongoDB with environment variables
+	if err := db.InitMongoDB(mongoURI, dbName, collectionName); err != nil {
+		log.Fatal("Failed to initialize MongoDB:", err)
+	}
 	router := gin.Default()
 
 	// API Versioning

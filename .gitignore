@@ -24,4 +24,10 @@ go.work.sum
 # env file
 .env
 
+# location for csv files that will be uploaded
+csv
+
+# mac's ridiculousness
+*.DS_Store
+
 super-fantasy-api

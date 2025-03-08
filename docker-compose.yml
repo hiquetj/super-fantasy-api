@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  mongodb:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "27017:27017"  # Map host port 27017 to container port 27017
+    volumes:
+      - mongodb_data:/data/db  # Persist data across container restarts
+    environment:
+      - MONGO_INITDB_DATABASE=super-fantasy  # Optional: Initialize with your DB name
+
+volumes:
+  mongodb_data:  # Named volume for persistence
