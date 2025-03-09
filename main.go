@@ -45,6 +45,8 @@ func main() {
 		// Baseball routes
 		baseball := v1.Group("/baseball")
 		baseball.POST("/projections", handlers.CalculateBaseballProjections)
+		uploadBaseball := baseball.Group("/upload")
+		uploadBaseball.POST("", handlers.UploadCSV)
 	}
 
 	router.Run(":8080")

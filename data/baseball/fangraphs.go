@@ -6,7 +6,7 @@ import (
 
 // struct is based on batx rankings in fangraphs
 // https://www.fangraphs.com/projections?type=thebatx&stats=bat&pos=all&team=0&players=0&lg=all&z=1741170599&pageitems=30&statgroup=standard&fantasypreset=dashboard
-type Batter struct {
+type FangraphsBatter struct {
 	Rank           int     `bson:"rank" json:"rank"`                       // # (position in list)
 	Name           string  `bson:"name" json:"name"`                       // Name
 	Team           string  `bson:"team" json:"team"`                       // Team
@@ -29,10 +29,12 @@ type Batter struct {
 	StolenBases    float64 `bson:"stolen_bases" json:"stolen_bases"`       // SB
 	CaughtStealing float64 `bson:"caught_stealing" json:"caught_stealing"` // CS
 	AVG            float64 `bson:"avg" json:"avg"`                         // AVG
+	Year           string  `bson:"year" json:"year"`                       // year
 }
 
 // struct is based on atc rankings in fangraphs
-type Pitcher struct {
+// https://www.fangraphs.com/fantasy-tools/auction-calculator?teams=12&lg=MLB&dollars=260&mb=1&mp=20&msp=5&mrp=5&type=pit&players=&proj=atc&split=&points=c%7C1%2C2%2C3%2C4%2C5%2C7%7C0%2C13%2C14%2C2%2C3%2C4%2C6&rep=0&drp=0&pp=SS%2C2B%2C3B%2COF%2C1B%2CC&pos=1%2C1%2C1%2C1%2C4%2C1%2C0%2C0%2C1%2C1%2C3%2C2%2C4%2C5%2C0&sort=&view=0
+type FangraphsPitcher struct {
 	Rank              int     `bson:"rank" json:"rank"`                               // #
 	Name              string  `bson:"name" json:"name"`                               // Name
 	Team              string  `bson:"team" json:"team"`                               // Team
@@ -54,10 +56,11 @@ type Pitcher struct {
 	IntWalks          float64 `bson:"int_walks" json:"int_walks"`                     // IBB
 	HitByPitch        float64 `bson:"hit_by_pitch" json:"hit_by_pitch"`               // HBP
 	Strikeouts        float64 `bson:"strikeouts" json:"strikeouts"`                   // SO
+	Year              string  `bson:"year" json:"year"`                               // year
 }
 
 // CalculatePoints converts FanGraphs projections to fantasy points using league settings
-func CalculateBatterPoints(player Batter, settings models.LeagueSettings) models.PlayerProjection {
+func CalculateBatterPoints(player FangraphsBatter, settings models.LeagueSettings) models.PlayerProjection {
 	// TODO: add conditionalizing for other types of league settings
 	// for now, we leave what we use
 	totalPoints := 0.0
@@ -66,6 +69,7 @@ func CalculateBatterPoints(player Batter, settings models.LeagueSettings) models
 	totalPoints += player.RBI * settings.Batting.RunsBattedIn
 	totalPoints += player.Walks * settings.Batting.Walks
 	totalPoints += player.Strikeouts * settings.Batting.Strikeouts
+	totalPoints += player.StolenBases * settings.Batting.StolenBases
 
 	return models.PlayerProjection{
 		PlayerName:  player.Name,
@@ -74,7 +78,7 @@ func CalculateBatterPoints(player Batter, settings models.LeagueSettings) models
 }
 
 // CalculatePoints converts FanGraphs projections to fantasy points using league settings
-func CalculatePitcherPoints(player Pitcher, settings models.LeagueSettings) models.PlayerProjection {
+func CalculatePitcherPoints(player FangraphsPitcher, settings models.LeagueSettings) models.PlayerProjection {
 	// TODO: add conditionalizing for other types of league settings
 	// for now, we leave what we use
 	totalPoints := 0.0

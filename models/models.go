@@ -29,9 +29,17 @@ type ProjectionRequest struct {
 	Settings       LeagueSettings `json:"settings"`
 	ProjectionName string         `json:"projection_name"`
 	Position       string         `json:"position"`
+	Year           string         `json:"year"`
+	Source         string         `json:"source"`
 }
 
 type PlayerProjection struct {
 	PlayerName  string  `json:"player_name"`
 	TotalPoints float64 `json:"total_points"`
+}
+
+type UploadRequest struct {
+	Source   string `json:"source"`
+	Position string `json:"position"`
+	Year     string `json:"year"`
 }
