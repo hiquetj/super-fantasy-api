@@ -45,6 +45,7 @@ func main() {
 		// Baseball routes
 		baseball := v1.Group("/baseball")
 		baseball.POST("/projections", handlers.CalculateBaseballProjections)
+		baseball.POST("/export", handlers.ExportPlayerPointsCSV)
 		uploadBaseball := baseball.Group("/upload")
 		uploadBaseball.POST("", handlers.UploadCSV)
 	}
