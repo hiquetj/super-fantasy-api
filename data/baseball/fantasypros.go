@@ -25,11 +25,13 @@ type FantasyProsBatter struct {
 	SLG         float64 `bson:"slg" json:"slg"`                   // SLG
 	OPS         float64 `bson:"ops" json:"ops"`                   // OPS
 	Year        string  `bson:"year" json:"year"`                 // year
+	Source      string  `bson:"source" json:"source"`             // source
+	Position    string  `bson:"position" json:"position"`         // position
 }
 
 // Pitcher represents a FantasyPros pitcher projection
 // Based on CSV: "Player","Team","Positions","IP","K","W","SV","ERA","WHIP","ER","H","BB","HR","G","GS","L","CG"
-type FanstasyProsPitcher struct {
+type FantasyProsPitcher struct {
 	Name            string  `bson:"name" json:"name"`                           // Player
 	Team            string  `bson:"team" json:"team"`                           // Team
 	Positions       string  `bson:"positions" json:"positions"`                 // Positions
@@ -48,6 +50,8 @@ type FanstasyProsPitcher struct {
 	Losses          float64 `bson:"losses" json:"losses"`                       // L
 	CompleteGames   float64 `bson:"complete_games" json:"complete_games"`       // CG
 	Year            string  `bson:"year" json:"year"`                           // year
+	Source          string  `bson:"source" json:"source"`                       // source
+	Position        string  `bson:"position" json:"position"`                   // position
 }
 
 // CalculateFantasyProsBatterPoints converts FantasyPros batter projections to fantasy points using league settings
@@ -69,7 +73,7 @@ func CalculateFantasyProsBatterPoints(player FantasyProsBatter, settings models.
 }
 
 // CalculateFantasyProsPitcherPoints converts FantasyPros pitcher projections to fantasy points using league settings
-func CalculateFantasyProsPitcherPoints(player FanstasyProsPitcher, settings models.LeagueSettings) models.PlayerProjection {
+func CalculateFantasyProsPitcherPoints(player FantasyProsPitcher, settings models.LeagueSettings) models.PlayerProjection {
 	totalPoints := 0.0
 	totalPoints += player.Strikeouts * settings.Pitching.Strikeouts
 	totalPoints += player.InningsPitched * settings.Pitching.InningsPitched

@@ -14,7 +14,7 @@ import (
 )
 
 // SaveBatterCSV parses and saves generic batter CSV data to MongoDB
-func SaveFanGraphsBatterCSV(csvData string, year string) error {
+func SaveFanGraphsBatterCSV(csvData string, year string, suffix string, position string) error {
 	reader := csv.NewReader(strings.NewReader(csvData))
 	records, err := reader.ReadAll()
 	if err != nil {
@@ -59,6 +59,11 @@ func SaveFanGraphsBatterCSV(csvData string, year string) error {
 			CaughtStealing: utils.ParseFloat(record[20]),
 			AVG:            utils.ParseFloat(record[21]),
 			Year:           year,
+			Source:         "fangraphs",
+			Position:       position,
+		}
+		if suffix != "" {
+			player.Source += "_" + suffix
 		}
 		documents = append(documents, player)
 	}
@@ -71,7 +76,7 @@ func SaveFanGraphsBatterCSV(csvData string, year string) error {
 }
 
 // SavePitcherCSV parses and saves pitcher CSV data to MongoDB
-func SaveFanGraphsPitcherCSV(csvData string, year string) error {
+func SaveFanGraphsPitcherCSV(csvData string, year string, suffix string, position string) error {
 	reader := csv.NewReader(strings.NewReader(csvData))
 	records, err := reader.ReadAll()
 	if err != nil {
@@ -114,6 +119,11 @@ func SaveFanGraphsPitcherCSV(csvData string, year string) error {
 			HitByPitch:        utils.ParseFloat(record[19]), // HBP
 			Strikeouts:        utils.ParseFloat(record[20]), // SO
 			Year:              year,
+			Source:            "fangraphs",
+			Position:          position,
+		}
+		if suffix != "" {
+			player.Source += "_" + suffix
 		}
 		documents = append(documents, player)
 	}
@@ -126,7 +136,7 @@ func SaveFanGraphsPitcherCSV(csvData string, year string) error {
 }
 
 // SaveFantasyProsBatterCSV saves FantasyPros batter CSV data to MongoDB
-func SaveFantasyProsBatterCSV(csvData string, year string) error {
+func SaveFantasyProsBatterCSV(csvData string, year string, position string) error {
 	reader := csv.NewReader(strings.NewReader(csvData))
 	records, err := reader.ReadAll()
 	if err != nil {
@@ -165,6 +175,8 @@ func SaveFantasyProsBatterCSV(csvData string, year string) error {
 			SLG:         utils.ParseFloat(record[15]),
 			OPS:         utils.ParseFloat(record[16]),
 			Year:        year,
+			Source:      "fantasypros",
+			Position:    position,
 		}
 		documents = append(documents, player)
 	}
@@ -177,7 +189,7 @@ func SaveFantasyProsBatterCSV(csvData string, year string) error {
 }
 
 // SaveFantasyProsPitcherCSV saves FantasyPros pitcher CSV data to MongoDB
-func SaveFantasyProsPitcherCSV(csvData string, year string) error {
+func SaveFantasyProsPitcherCSV(csvData string, year string, position string) error {
 	reader := csv.NewReader(strings.NewReader(csvData))
 	records, err := reader.ReadAll()
 	if err != nil {
@@ -197,7 +209,7 @@ func SaveFantasyProsPitcherCSV(csvData string, year string) error {
 		if i == 0 {
 			continue // Skip header
 		}
-		player := baseball.FanstasyProsPitcher{
+		player := baseball.FantasyProsPitcher{
 			Name:            record[0],
 			Team:            record[1],
 			Positions:       record[2],
@@ -216,6 +228,8 @@ func SaveFantasyProsPitcherCSV(csvData string, year string) error {
 			Losses:          utils.ParseFloat(record[15]),
 			CompleteGames:   utils.ParseFloat(record[16]),
 			Year:            year,
+			Source:          "fantasypros",
+			Position:        position,
 		}
 		documents = append(documents, player)
 	}

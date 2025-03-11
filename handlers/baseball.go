@@ -95,6 +95,7 @@ func CalculateBaseballProjections(c *gin.Context) {
 					CaughtStealing: utils.ParseFloat(record[20]),
 					AVG:            utils.ParseFloat(record[21]),
 					Year:           request.Year,
+					Position:       request.Position,
 				}
 
 				playerProjection := baseball.CalculateBatterPoints(player, request.Settings)
@@ -123,6 +124,7 @@ func CalculateBaseballProjections(c *gin.Context) {
 					HitByPitch:        utils.ParseFloat(record[19]),
 					Strikeouts:        utils.ParseFloat(record[20]),
 					Year:              request.Year,
+					Position:          request.Position,
 				}
 
 				playerProjection := baseball.CalculatePitcherPoints(player, request.Settings)
@@ -153,11 +155,12 @@ func CalculateBaseballProjections(c *gin.Context) {
 					SLG:         utils.ParseFloat(record[15]),
 					OPS:         utils.ParseFloat(record[16]),
 					Year:        request.Year,
+					Position:    request.Position,
 				}
 				playerProjection := baseball.CalculateFantasyProsBatterPoints(player, request.Settings)
 				projections = append(projections, playerProjection)
 			case "pitcher":
-				player := baseball.FanstasyProsPitcher{
+				player := baseball.FantasyProsPitcher{
 					Name:            record[0],
 					Team:            record[1],
 					Positions:       record[2],
@@ -176,6 +179,7 @@ func CalculateBaseballProjections(c *gin.Context) {
 					Losses:          utils.ParseFloat(record[15]),
 					CompleteGames:   utils.ParseFloat(record[16]),
 					Year:            request.Year,
+					Position:        request.Position,
 				}
 				playerProjection := baseball.CalculateFantasyProsPitcherPoints(player, request.Settings)
 				projections = append(projections, playerProjection)
@@ -232,9 +236,9 @@ func UploadCSV(c *gin.Context) {
 	case "fangraphs":
 		switch request.Position {
 		case "batter":
-			err = db.SaveFanGraphsBatterCSV(buf.String(), request.Year)
+			err = db.SaveFanGraphsBatterCSV(buf.String(), request.Year, request.Suffix, request.Position)
 		case "pitcher":
-			err = db.SaveFanGraphsPitcherCSV(buf.String(), request.Year)
+			err = db.SaveFanGraphsPitcherCSV(buf.String(), request.Year, request.Suffix, request.Position)
 		default:
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid position: must be 'batter' or 'pitcher'"})
 			return
@@ -242,9 +246,9 @@ func UploadCSV(c *gin.Context) {
 	case "fantasypros":
 		switch request.Position {
 		case "batter":
-			err = db.SaveFantasyProsBatterCSV(buf.String(), request.Year)
+			err = db.SaveFantasyProsBatterCSV(buf.String(), request.Year, request.Position)
 		case "pitcher":
-			err = db.SaveFantasyProsPitcherCSV(buf.String(), request.Year)
+			err = db.SaveFantasyProsPitcherCSV(buf.String(), request.Year, request.Position)
 		default:
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid position: must be 'batter' or 'pitcher'"})
 			return

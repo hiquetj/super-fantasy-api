@@ -30,6 +30,8 @@ type FangraphsBatter struct {
 	CaughtStealing float64 `bson:"caught_stealing" json:"caught_stealing"` // CS
 	AVG            float64 `bson:"avg" json:"avg"`                         // AVG
 	Year           string  `bson:"year" json:"year"`                       // year
+	Source         string  `bson:"source" json:"source"`                   // source
+	Position       string  `bson:"position" json:"position"`               // position
 }
 
 // struct is based on atc rankings in fangraphs
@@ -57,6 +59,8 @@ type FangraphsPitcher struct {
 	HitByPitch        float64 `bson:"hit_by_pitch" json:"hit_by_pitch"`               // HBP
 	Strikeouts        float64 `bson:"strikeouts" json:"strikeouts"`                   // SO
 	Year              string  `bson:"year" json:"year"`                               // year
+	Source            string  `bson:"source" json:"source"`                           // source
+	Position          string  `bson:"position" json:"position"`                       // position
 }
 
 // CalculatePoints converts FanGraphs projections to fantasy points using league settings

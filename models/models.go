@@ -42,4 +42,5 @@ type UploadRequest struct {
 	Source   string `json:"source"`
 	Position string `json:"position"`
 	Year     string `json:"year"`
+	Suffix   string `json:"suffix,omitempty"`
 }
