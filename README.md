@@ -11,6 +11,16 @@ API service for calculating, retrieving stats, and other items
   - DB_NAME=super-fantasy
   - COLLECTION_NAME=Baseball
 
+### Start Mongo
+
+Run:
+
+```sh
+mongosh
+show dbs
+db.createCollection("Baseball")
+```
+
 ## Build and Run
 
 To build run:
